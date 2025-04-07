@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi Disease Prediction System</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- <link rel="stylesheet" href="style.css"></link> -->
+    <style>
+    /* General Styles */
+    body {
+        background-color: #f0f8ff; /* AliceBlue for a clinical, clean look */
+        color: #333;
+        font-family: 'Segoe UI', sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+    /* Sidebar Styles */
+    .sidebar {
+        height: 100vh;
+        background: linear-gradient(135deg, #005c97, #363795); /* Deep clinical blue */
+        color: white;
+        padding: 20px;
+        box-shadow: 2px 0px 12px rgba(0, 0, 0, 0.25);
+    }
+    .sidebar a {
+        display: block;
+        padding: 14px 16px;
+        color: #ffffff;
+        text-decoration: none;
+        border-radius: 8px;
+        margin: 10px 0;
+        font-weight: 500;
+        transition: all 0.3s ease-in-out;
+    }
+    .sidebar a:hover,.sidebar a.active {
+        background: #00c9a7; /* Soft teal for action highlight */
+        box-shadow: 0 0 12px rgba(0, 201, 167, 0.6);
+        transform: scale(1.05);
+    }
+    /* Content Area */
+    .content {
+        padding: 30px;
+    }
+    
+    /* Form Container */
+    .form-container {
+        background: linear-gradient(135deg, #ffffff, #e0f7fa); /* White to soft cyan */
+        border-radius: 20px;
+        box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+        transition: all 0.3s ease-in-out;
+    }
+    .form-container:hover {
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+    /* Form Sections */
+    .form-section {
+        background: linear-gradient(135deg, #e3f2fd, #bbdefb); /* Light health blue */
+        padding: 25px;
+        border-radius: 15px;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+        transition: transform 0.3s ease-in-out;
+        margin-bottom: 30px;
+    }
+    .form-section:hover {
+        transform: translateY(-6px);
+    }
+    /* Input Fields */
+    .form-control {
+        transition: border-color 0.2s, box-shadow 0.2s;
+        border: 2px solid #cfd8dc;
+        border-radius: 8px;
+        padding: 10px;
+        background-color: #fefefe;
+        font-size: 15px;
+    }
+    .form-control:focus {
+        border-color: #00acc1;
+        box-shadow: 0 0 10px rgba(0, 172, 193, 0.3);
+    }
+    /* Button Styles */
+    .btn {
+        background-color: #00acc1; /* Medical blue-green */
+        color: white;
+        border-radius: 8px;
+        padding: 10px 24px;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 500;
+        transition: background 0.3s ease-in-out, transform 0.2s;
+    }
+    .btn:hover {
+        background: #008b9a;
+        transform: scale(1.05);
+    }
+    /* Predict Button */
+    .btn-success {
+        background: #00acc1;
+    }
+
+    .btn-success:hover {
+        background: #008b9a;
+    }
+    </style>
+</head>
+<body>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <nav class="col-md-3 col-lg-2 d-md-block sidebar">
+                <h3 class="text-center" style="color: #ffffff; height: 20%; ">Multi Disease Prediction</h3>
+                <a href="#"  onclick="showSection('diabetes')">Diabetes Disease Prediction</a>
+                <a href="#" onclick="showSection('heart')">Heart Disease Prediction</a>
+                <a href="#" onclick="showSection('parkinson')">Parkinson Disease Prediction</a>
+            </nav>
+
+            <!-- Main Content -->
+            <main class="col-md-9 col-lg-10 content">
+                <h2 class="text-center">Multi Disease Prediction System</h2>
+                <!-- Diabetes Form -->
+                <div name="diabetes" class="form-section">
+                    <h4 class="text-center">Diabetes Prediction</h4>
+                    <form method="post" id="diabetesForm">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label>Number of Pregnancies</label>
+                                <input type="number" class="form-control" id="pregnancies" name="pregnancies" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label>Glucose Level</label>
+                                <input type="number" class="form-control" id="glucose" name="glucose" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label>Blood Pressure</label>
+                                <input type="number" class="form-control" id="blood_pressure" name="blood_pressure" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label>Skin Thickness</label>
+                                <input type="number" class="form-control" id="skin_thickness" name="skin_thickness" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label>Insulin Level</label>
+                                <input type="number" class="form-control" id="insulin" name="insulin" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label>BMI</label>
+                                <input type="number" class="form-control" id="bmi" name="bmi" step="0.1" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label>Diabetes Pedigree</label>
+                                <input type="number" class="form-control" id="pedigree" name="pedigree" step="0.1" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label>Age</label>
+                                <input type="number" class="form-control" id="age" name="age" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-success">Predict</button>
+                        <div id="diabetesResult" class="mt-3 text-center" style="font-weight: bold;"></div>
+                    </form>
+                </div>
+                <!-- Heart Disease Form -->
+                <div name="heart" class="form-section" style="display: none;">
+                    <h4 class="text-center">Heart Disease Prediction</h4>
+                    <form method="post" id="heartForm">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label>Age</label>
+                                <input type="number" class="form-control" id="age" name="age" step="any" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                               <label>Sex</label>
+                               <input type="number" class="form-control" id="sex" name="sex" step="any" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                               <label>Chest Pain Types</label>
+                               <input type="number" class="form-control" id="cp" name="cp" step="any" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                               <label>Resting Blood Pressure</label>
+                               <input type="number" class="form-control" id="trestbps" name="trestbps" step="any" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label>Serum Cholesterol (mg/dl)</label>
+                                <input type="number" class="form-control" id="chol" name="chol" step="any" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label>Fasting Blood Sugar > 120 mg/dl</label>
+                                <input type="number" class="form-control" id="fbs" name="fbs" step="any" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label>Resting Electrocardiographic Results</label>
+                                <input type="number" class="form-control" id="restecg" name="restecg" step="any" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                               <label>Maximum Heart Rate Achieved</label>
+                               <input type="number" class="form-control" id="thalach" name="thalach" step="any" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                               <label>Exercise Induced Angina</label>
+                               <input type="number" class="form-control" id="exang" name="exang" step="any" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label>ST Depression Induced by Exercise</label>
+                                <input type="number" class="form-control" id="oldpeak" name="oldpeak" step="any" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label>Slope of the Peak Exercise ST Segment</label>
+                                <input type="number" class="form-control" id="slope" name="slope" step="any" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label>Major Vessels Colored by Flourosopy</label>
+                                <input type="number" class="form-control" id="ca" name="ca" step="any" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label>Thal (0 = Normal, 1 = Fixed Defect, 2 = Reversible Defect)</label>
+                                <input type="number" class="form-control" id="thal" name="thal" step="any" required>
+                            </div>
+                        </div>
+                        <button class="btn btn-success">Predict</button>
+                        <div id="heartResult" class="mt-3 text-center" style="font-weight: bold;"></div>
+                    </form>
+                </div>
+                
+                <!-- Parkinson Disease Form -->
+                <div name="parkinson" class="form-section" style="display: none;">
+                    <h4 class="text-center">Parkinson Disease Prediction</h4>
+                    <form method="post" id="parkinsonForm">
+                        <div class="row">
+                            <!-- All input fields as in your original form -->
+                            <div class="col-md-4 mb-3">
+                                <label for="fo">Fundamental Frequency (Fo)</label>
+                                <input type="number" class="form-control" id="fo" name="fo" step="any" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="fhi">Highest Frequency (Fhi)</label>
+                                <input type="number" class="form-control" id="fhi" name="fhi" step="any" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="flo">Lowest Frequency (Flo)</label>
+                                <input type="number" class="form-control" id="flo" name="flo" step="any" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="jitter_percent">Jitter (%)</label>
+                                <input type="number" class="form-control" id="jitter_percent" name="jitter_percent" step="any" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="jitter_abs">Jitter (Abs)</label>
+                                <input type="number" class="form-control" id="jitter_abs" name="jitter_abs" step="any" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="rap">RAP</label>
+                                <input type="number" class="form-control" id="rap" name="rap" step="any" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="ppq">PPQ</label>
+                                <input type="number" class="form-control" id="ppq" name="ppq" step="any" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="ddp">DDP</label>
+                                <input type="number" class="form-control" id="ddp" name="ddp" step="any" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="shimmer">Shimmer</label>
+                                <input type="number" class="form-control" id="shimmer" name="shimmer" step="any" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="shimmer_db">Shimmer (dB)</label>
+                                <input type="number" class="form-control" id="shimmer_db" name="shimmer_db" step="any" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="apq3">APQ3</label>
+                                <input type="number" class="form-control" id="apq3" name="apq3" step="any" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="apq5">APQ5</label>
+                                <input type="number" class="form-control" id="apq5" name="apq5" step="any" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="apq">APQ</label>
+                                <input type="number" class="form-control" id="apq" name="apq" step="any" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="dda">DDA</label>
+                                <input type="number" class="form-control" id="dda" name="dda" step="any" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="nhr">NHR</label>
+                                <input type="number" class="form-control" id="nhr" name="nhr" step="any" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="hnr">HNR</label>
+                                <input type="number" class="form-control" id="hnr" name="hnr" step="any" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="rpde">RPDE</label>
+                                <input type="number" class="form-control" id="rpde" name="rpde" step="any" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="dfa">DFA</label>
+                                <input type="number" class="form-control" id="dfa" name="dfa" step="any" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="spread1">Spread1</label>
+                                <input type="number" class="form-control" id="spread1" name="spread1" step="any" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="spread2">Spread2</label>
+                                <input type="number" class="form-control" id="spread2" name="spread2" step="any" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="d2">D2</label>
+                                <input type="number" class="form-control" id="d2" name="d2" step="any" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="ppe">PPE</label>
+                                <input type="number" class="form-control" id="ppe" name="ppe" step="any" required>
+                            </div>
+                        </div>
+                
+                        <button class="btn btn-success">Predict</button>
+                
+                        <!-- 🟢 Prediction result will appear here -->
+                        <div id="parkinsonResult" class="mt-3 text-center" style="font-weight: bold;"></div>
+                    </form>
+                </div>
+                
+                
+            </main>
+        </div>
+    </div>
+
+    
+    <script>
+        function showSection(sectionName) {
+            const sections = document.querySelectorAll('.form-section');
+            sections.forEach(section => {
+                section.style.display = section.getAttribute('name') === sectionName ? 'block' : 'none';
+            });
+        }
+    
+        async function handlePrediction(event, resultDivId, endpoint, fields) {
+            event.preventDefault();
+    
+            const data = {};
+            let isValid = true;
+    
+            // Collect and validate input data
+            fields.forEach(field => {
+                const value = document.getElementById(field).value;
+                if (!value || isNaN(value)) {
+                    isValid = false;
+                    document.getElementById(resultDivId).innerHTML = `<strong style="color:red;">Invalid input in field: ${field}</strong>`;
+                }
+                data[field] = value ? parseFloat(value) : 0.0; // Handle empty fields safely
+            });
+    
+            if (!isValid) {
+                document.getElementById(resultDivId).innerHTML = `<strong style="color:red;">Please fill all fields with valid numbers.</strong>`;
+                return;
+            }
+    
+            // Show loading spinner
+            document.getElementById(resultDivId).innerHTML = `
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            `;
+    
+            try {
+                const response = await fetch(`http://127.0.0.1:8000/predict/${endpoint}`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(data),
+                });
+    
+                if (!response.ok) {
+                    throw new Error(`Server responded with status ${response.status}`);
+                }
+    
+                const result = await response.json();
+                document.getElementById(resultDivId).innerHTML = `<strong>${result.prediction}</strong>`;
+            } catch (error) {
+                document.getElementById(resultDivId).innerHTML = `<strong style="color:red;">Error: ${error.message}</strong>`;
+            }
+        }
+    
+        document.addEventListener("DOMContentLoaded", () => {
+            // Diabetes Form Submission
+            document.getElementById("diabetesForm")?.addEventListener("submit", function(event) {
+                handlePrediction(event, "diabetesResult", "diabetes", [
+                    "pregnancies", "glucose", "blood_pressure", "skin_thickness", 
+                    "insulin", "bmi", "pedigree", "age"
+                ]);
+            });
+    
+            // Heart Disease Form Submission
+            document.getElementById("heartForm")?.addEventListener("submit", function(event) {
+                handlePrediction(event, "heartResult", "heart", [
+                    "age", "sex", "cp", "trestbps", "chol", "fbs", 
+                    "restecg", "thalach", "exang", "oldpeak", 
+                    "slope", "ca", "thal"
+                ]);
+            });
+    
+            // Parkinson Disease Form Submission
+            document.getElementById("parkinsonForm")?.addEventListener("submit", function(event) {
+                handlePrediction(event, "parkinsonResult", "parkinson", [
+                    "fo", "fhi", "flo", "jitter_percent", "jitter_abs", "rap", "ppq", "ddp", 
+                    "shimmer", "shimmer_db", "apq3", "apq5", "apq", "dda", "nhr", "hnr", 
+                    "rpde", "dfa", "spread1", "spread2", "d2", "ppe"
+                ]);
+            });
+        });
+    </script>
+</body>
+</html>
